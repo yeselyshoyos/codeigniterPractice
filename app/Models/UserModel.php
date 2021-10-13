@@ -19,7 +19,23 @@ class UserModel extends Model
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
-    protected $validationRules    = [];
-    protected $validationMessages = [];
+    protected $validationRules    = [
+        'name' => 'required|alpha_numeric_space|min_length[3]',
+        'email' => 'required|valid_email|is_unique[users.email]'
+    ];
+    protected $validationMessages = [
+        'email' =>[
+            'is_unique' => 'Lo sentimos. Tú correo esta siendo utilizado por otro usuario.'
+        ], 
+    ];
     protected $skipValidation     = false;
+
+    //protected $beforeInsert = ['agregaAlgoName'];
+
+    //protected $beforeupdate = ['agregaAlgoName'];
+
+    protected function agregaAlgoName(array $data){
+        $data['data']['name'] = $data['data']['name']. " algo";
+        return $data;
+    }
 }

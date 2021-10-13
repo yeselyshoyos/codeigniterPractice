@@ -5,6 +5,31 @@ use App\Models\UserModel;
 
 class Home extends BaseController
 {
+    public function __construct(){
+        helper('form');
+    }
+
+    public function formulario(){
+        return view('estructura/header').view('estructura/formulario');
+    }
+
+    public function guarda(){
+        $usermodel = new UserModel($db);
+        $request = \Config\Services::request();
+
+        $data=array(
+            'name' => $request->getPostGet('name'),
+            'email' => $request->getPostGet('email')
+        );
+
+        if($usermodel->insert($data)===false){
+            var_dump($usermodel->errors());
+        }
+        $users = $usermodel->findAll();
+        $users = array('users' => $users);
+        return view('estructura/header').view('estructura/body', $users);
+    }
+
     public function index()
     {
         $usermodel = new UserModel($db);
@@ -67,11 +92,57 @@ class Home extends BaseController
         ];
 
         $usermodel->save($data);
-        */
+        
 #-------------------------------------------------------------------------------------------
+//borrar registros
+        //$usermodel->delete(3);
+        
+        //$usermodel->delete([4,5,6]);
+
+        //$usermodel->where('id',2)->delete();   
+        $usermodel->purgeDeleted(); borrar registros deleted_at 
+
+#-------------------------------------------------------------------------------------------
+        $data=[
+            'name' => "Nombrevalido",
+            'email' => "Correovalido@gmail.com"
+        ];
+
+        if ($usermodel->save($data) === false){
+            var_dump($usermodel->errors());
+        }
+        
+ #------------------------------------------------------------------------------------------- 
+        //builder
+        $users = $usermodel->where('name','programador 2')
+                        ->orderBy('id','asc')
+                        ->findAll();
+                       
+#------------------------------------------------------------------------------------------- 
+//mandar a objetos asObject -- asArray
+
+            $users = $usermodel->asArray()->where('name','programador 2')
+                    ->orderBy('id','asc')
+                    ->findAll();
+                    var_dump($users);
+
+                    */ 
+#-------------------------------------------------------------------------------------------
+//mandar algo relacionado con el modelo
+        $data=[
+            'name' => "Nombrevalido 2",
+            'email' => "Correovalido2@gmail.com"
+        ];
+
+        if ($usermodel->save($data) === false){
+            var_dump($usermodel->errors());
+        }
 
         $users = $usermodel->findAll();
         $users = array('users' => $users);
         return view('estructura/header').view('estructura/body', $users);
     }
+
+
+    
 }
