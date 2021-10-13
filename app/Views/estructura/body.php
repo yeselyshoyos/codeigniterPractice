@@ -1,26 +1,35 @@
 <body>
-    <h4>Hola desde del body</h4>
-    <!---<//?php echo suma(1, 2); ?> <br>
-    <//?php echo resta(2, 4); ?>-->
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>name</th>
-            <th>email</th>
-            <th>deleted</th>
-        </tr>
-        <tr>
-            <?php
-            foreach($users as $user){
-                echo "<tr>";
-                echo "<td>".$user['id']."</td>";
-                echo "<td>".$user['name']."</td>";
-                echo "<td>".$user['email']."</td>";
-                echo "<td>".$user['deleted_at']."</td>";
-                echo "</tr>";
-            }
-             ?>
-        </tr>
-    </table>
+    <div class="container">
+        <div class="row">
+            <a href="<?php base_url();?>./home/formulario" class="btn btn-info mt-10" role="button">Nuevo</a>
+        </div>
+        <!---<h4>Hola desde del body</h4>
+        <//?php echo suma(1, 2); ?> <br>
+        <//?php echo resta(2, 4); ?>-->
+        <div class="row">
+            <table class="table">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">name</th>
+                    <th scope="col">email</th>
+                    <th scope="col">deleted</th>
+                </tr>
+                <tr>
+                    <?php
+                    foreach($users as $user){
+                        echo "<tr scope='row'>";
+                        echo "<td>".$user['id']."</td>";
+                        echo "<td>".$user['name']."</td>";
+                        echo "<td>".$user['email']."</td>";
+                        echo "<td>".$user['deleted_at']."</td>";
+                        echo "</tr>";
+                    }
+                    ?>
+                </tr>
+            </table>
+        </div>
+        
+
+    </div>
 </body>
 </html>
