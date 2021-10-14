@@ -21,13 +21,55 @@ class Home extends BaseController
             'name' => $request->getPostGet('name'),
             'email' => $request->getPostGet('email')
         );
+        #actualizar------
 
-        if($usermodel->insert($data)===false){
+            if($request->getPostGet('id')) {
+                $data['id'] = $request->getPostGet('id');
+            }
+
+        #-------------------
+        if($usermodel->save($data)===false){
             var_dump($usermodel->errors());
         }
-        $users = $usermodel->findAll();
+
+        #una vez actualizado mandar a esta vista
+
+        if ($request->getPostGet('id')) {
+            $users = $usermodel->find([$request->getPostGet('id')]);
+            $users = array('users' => $users);
+            return view('estructura/header').view('estructura/formulario', $users);
+        }else{
+            $users = $usermodel->findAll();
+            $users = array('users' => $users);
+            return view('estructura/header').view('estructura/body', $users);
+        }
+        #------------------------
+        
+    }
+
+    public function editar(){
+        $usermodel = new UserModel($db);
+        $request = \Config\Services::request();
+
+        $id = $request->getPostGet('id');
+
+
+        $users = $usermodel->find([$id]);
         $users = array('users' => $users);
-        return view('estructura/header').view('estructura/body', $users);
+        return view('estructura/header').view('estructura/formulario', $users);
+    }
+
+
+    public function borrar(){
+        $usermodel = new UserModel($db);
+        $request = \Config\Services::request();
+
+        $id = $request->getPostGet('id');
+
+
+        $users = $usermodel->find([$id]);
+        $users = array('users' => $users);
+        return view('estructura/header').view('estructura/formulario', $users);
     }
 
     public function index()
