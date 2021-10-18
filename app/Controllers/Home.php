@@ -51,8 +51,12 @@ class Home extends BaseController
         $usermodel = new UserModel($db);
         $request = \Config\Services::request();
 
-        $id = $request->getPostGet('id');
-
+        if($request->getPostGet('id')){
+            $id = $request->getPostGet('id');
+        }else{
+            #segmentos
+        $id = $request->uri->getSegment(3);
+        }
 
         $users = $usermodel->find([$id]);
         $users = array('users' => $users);
@@ -63,17 +67,25 @@ class Home extends BaseController
     public function borrar(){
         $usermodel = new UserModel($db);
         $request = \Config\Services::request();
+        
+        if($request->getPostGet('id')){
+            $id = $request->getPostGet('id');
+        }else{
+            #segmentos
+        $id = $request->uri->getSegment(3);
+        }
 
-        $id = $request->getPostGet('id');
 
-
-        $users = $usermodel->find([$id]);
+        
+        $usermodel->delete($id);
+        $users = $usermodel->findAll();
         $users = array('users' => $users);
-        return view('estructura/header').view('estructura/formulario', $users);
+        return view('estructura/header').view('estructura/body', $users);
     }
 
     public function index()
     {
+        //sleep(1);
         $usermodel = new UserModel($db);
         //buscar un usuario particular
         // $users = $usermodel->find([1,2]);

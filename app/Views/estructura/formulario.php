@@ -1,7 +1,7 @@
 <div class="container">
 <?php   
 
-echo form_open('/home/guarda');
+echo form_open('/MiControlador/guarda');
 if(isset($users)){
     $name = $users[0]['name'];
     $email = $users[0]['email'];
